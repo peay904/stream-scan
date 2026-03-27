@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>stream-scan</Name>
+  <Repository>ghcr.io/peay904/stream-scan:latest</Repository>
+  <Registry>https://github.com/peay904/stream-scan</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/peay904/stream-scan/issues</Support>
+  <Project>https://github.com/peay904/stream-scan</Project>
+  <Overview>
+    Weekly scanner that finds new original content on Netflix, Hulu, Prime, Max, Peacock, Paramount+, Apple TV, and Disney+.
+    Generates a beautiful HTML digest with cover art and summaries.
+    Click WebUI to open the latest digest in your browser.
+  </Overview>
+  <Category>MediaApp:Other</Category>
+  <WebUI>http://[IP]:[PORT:7777]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/peay904/stream-scan/main/unraid-template.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/peay904/stream-scan/main/icon.png</Icon>
+  <ExtraParams>--restart=unless-stopped</ExtraParams>
+  <Description>
+    Stream Scan — weekly new release digest with cover art. Click WebUI to view.
+  </Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <HostPort>7777</HostPort>
+      <ContainerPort>7777</ContainerPort>
+      <Protocol>tcp</Protocol>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/appdata/stream-scan/output</HostDir>
+      <ContainerDir>/output</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+    <Volume>
+      <HostDir>/mnt/user/appdata/stream-scan/state</HostDir>
+      <ContainerDir>/state</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Environment>
+    <Variable>
+      <Value/>
+      <Name>TRAKT_CLIENT_ID</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value/>
+      <Name>TMDB_API_KEY</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>friday</Value>
+      <Name>SCAN_DAY</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>6</Value>
+      <Name>SCAN_HOUR</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>netflix,hulu,prime,max,peacock,paramount,apple,disney</Value>
+      <Name>SERVICES</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>America/New_York</Value>
+      <Name>TZ</Name>
+      <Mode/>
+    </Variable>
+  </Environment>
+  <Labels/>
+  <Config Name="Web UI Port" Target="7777" Default="7777"
+    Mode="tcp" Description="Port to access the digest in your browser. The WebUI button uses this." Type="Port"/>
+  <Config Name="Output Directory" Target="/output" Default="/mnt/user/appdata/stream-scan/output"
+    Mode="rw" Description="Where HTML digest files are saved (also served via WebUI)." Type="Path"/>
+  <Config Name="State Directory" Target="/state" Default="/mnt/user/appdata/stream-scan/state"
+    Mode="rw" Description="Stores last-run timestamp. Do not delete." Type="Path"/>
+  <Config Name="Trakt Client ID" Target="TRAKT_CLIENT_ID" Default=""
+    Description="Get free API key at https://trakt.tv/oauth/applications/new" Type="Variable"/>
+  <Config Name="TMDB API Key" Target="TMDB_API_KEY" Default=""
+    Description="Get free API key at https://www.themoviedb.org/settings/api" Type="Variable"/>
+  <Config Name="Scan Day" Target="SCAN_DAY" Default="friday"
+    Description="Day of week to run scan (monday, tuesday, etc.)" Type="Variable"/>
+  <Config Name="Scan Hour" Target="SCAN_HOUR" Default="6"
+    Description="Hour of day to run (24h format, e.g. 6 = 6am)" Type="Variable"/>
+  <Config Name="Services" Target="SERVICES" Default="netflix,hulu,prime,max,peacock,paramount,apple,disney"
+    Description="Comma-separated list of services to scan" Type="Variable"/>
+  <Config Name="Timezone" Target="TZ" Default="America/New_York"
+    Description="Your local timezone (e.g. America/New_York, Europe/London)" Type="Variable"/>
+</Container>
