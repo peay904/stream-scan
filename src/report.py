@@ -39,15 +39,16 @@ class ReportGenerator:
             since_display = since_date
 
         run_date = datetime.now().strftime("%B %d, %Y")
-        def _read_svg(name: str) -> str:
+        def _read_svg(name: str, prefix: str) -> str:
             p = IMAGES_DIR / name
             if not p.exists():
                 return ""
             content = p.read_text(encoding="utf-8")
-            # Strip XML declaration — invalid when inlining SVG in HTML
             start_index = content.find("<svg")
             if start_index != -1:
-                return content[start_index:]
+                content = content[start_index:]
+            # Prevent class name collisions when both SVGs are inlined on the same page
+            content = content.replace("cls-", f"{prefix}-cls-")
             return content
 
         html = template.render(
@@ -57,8 +58,8 @@ class ReportGenerator:
             since_date=since_display,
             run_date=run_date,
             total_count=len(items),
-            svg1=_read_svg("1.svg"),
-            svg2=_read_svg("2.svg"),
+            svg1=_read_svg("1.svg", "svg1"),
+            svg2=_read_svg("2.svg", "svg2"),
         )
 
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
