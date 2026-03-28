@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application
 COPY src/ ./src/
 COPY templates/ ./templates/
+COPY images/ ./images/
 
 # Create volume mount points
 RUN mkdir -p /output /state

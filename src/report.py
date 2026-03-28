@@ -45,8 +45,9 @@ class ReportGenerator:
                 return ""
             content = p.read_text(encoding="utf-8")
             # Strip XML declaration — invalid when inlining SVG in HTML
-            if content.startswith("<?xml"):
-                content = content[content.index("?>") + 2:].lstrip()
+            start_index = content.find("<svg")
+            if start_index != -1:
+                return content[start_index:]
             return content
 
         html = template.render(
