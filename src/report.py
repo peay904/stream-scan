@@ -9,6 +9,7 @@ from src.enricher import MediaItem
 logger = logging.getLogger(__name__)
 
 TEMPLATE_DIR = Path(__file__).parent.parent / "templates"
+IMAGES_DIR = Path(__file__).parent.parent / "images"
 OUTPUT_DIR = Path("/output")
 
 
@@ -38,6 +39,10 @@ class ReportGenerator:
             since_display = since_date
 
         run_date = datetime.now().strftime("%B %d, %Y")
+        def _read_svg(name: str) -> str:
+            p = IMAGES_DIR / name
+            return p.read_text(encoding="utf-8") if p.exists() else ""
+
         html = template.render(
             movies=movies,
             shows=shows,
@@ -45,6 +50,8 @@ class ReportGenerator:
             since_date=since_display,
             run_date=run_date,
             total_count=len(items),
+            svg1=_read_svg("1.svg"),
+            svg2=_read_svg("2.svg"),
         )
 
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

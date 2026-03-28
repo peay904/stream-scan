@@ -16,10 +16,29 @@
 
     /* ── Header ── */
     .header {
-      text-align: center;
       padding: 3rem 0 2rem;
       border-bottom: 1px solid #333;
       margin-bottom: 3rem;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .header-img {
+      flex-shrink: 0;
+      width: 180px;
+      opacity: 0.25;
+    }
+    .header-img svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .header-center {
+      flex: 1;
+      text-align: center;
     }
     .header h1 {
       font-size: 2.5rem;
@@ -39,7 +58,7 @@
       margin-top: 1.5rem;
     }
     .stat { text-align: center; }
-    .stat .num { font-size: 2rem; font-weight: 700; color: #e50914; }
+    .stat .num { font-size: 2rem; font-weight: 700; color: #FBB13B; }
     .stat .label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
     /* ── Section ── */
@@ -48,7 +67,7 @@
       font-weight: 600;
       margin: 2.5rem 0 1.5rem;
       padding-bottom: 0.5rem;
-      border-bottom: 2px solid #e50914;
+      border-bottom: 2px solid #FBB13B;
       color: #fff;
     }
 
@@ -150,7 +169,7 @@
       width: fit-content;
       background: none;
       border: none;
-      color: #e50914; /* Change to a brighter color like Netflix red to test visibility */
+      color: #FBB13B; /* Change to a brighter color like Netflix red to test visibility */
       font-size: 0.75rem;
       font-weight: bold;
       cursor: pointer;
@@ -188,21 +207,27 @@
 <body>
 
 <div class="header">
-  <h1>📺 New Streaming Releases</h1>
-  <p class="subtitle">Content that premiered between {{ since_date }} and {{ run_date }}</p>
-  <div class="stats-bar">
-    <div class="stat">
-      <div class="num">{{ total_count }}</div>
-      <div class="label">Total New Titles</div>
+  <div class="header-inner">
+    <div class="header-img">{{ svg1 | safe }}</div>
+    <div class="header-center">
+      <h1>📺 New Streaming Releases</h1>
+      <p class="subtitle">Content that premiered between {{ since_date }} and {{ run_date }}</p>
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="num">{{ total_count }}</div>
+          <div class="label">Total New Titles</div>
+        </div>
+        <div class="stat">
+          <div class="num">{{ movies|length }}</div>
+          <div class="label">Movies</div>
+        </div>
+        <div class="stat">
+          <div class="num">{{ shows|length }}</div>
+          <div class="label">Shows</div>
+        </div>
+      </div>
     </div>
-    <div class="stat">
-      <div class="num">{{ movies|length }}</div>
-      <div class="label">Movies</div>
-    </div>
-    <div class="stat">
-      <div class="num">{{ shows|length }}</div>
-      <div class="label">Shows</div>
-    </div>
+    <div class="header-img">{{ svg2 | safe }}</div>
   </div>
 
 {% macro service_class(svc) %}
