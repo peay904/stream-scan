@@ -13,17 +13,17 @@ logger = logging.getLogger(__name__)
 
 def run_scan() -> None:
     """Called by scheduler (or directly when FORCE_RUN=true)."""
+    from datetime import datetime, timedelta, timezone
+
     from src.config import config
     from src.enricher import Enricher
     from src.report import ReportGenerator
     from src.scanner import Scanner
-    from src.state import StateManager
 
     config.validate()
 
-    state = StateManager()
-    since_date = state.last_run_date()
-    logger.info(f"Starting scan since {since_date}")
+    since_date = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
+    logger.info(f"Starting scan: past 30 days from {since_date}")
 
     scanner = Scanner()
     raw_items = scanner.fetch_since(since_date)
@@ -34,8 +34,6 @@ def run_scan() -> None:
     report = ReportGenerator()
     output_file = report.generate(enriched, since_date)
     logger.info(f"Report saved to {output_file}")
-
-    state.update()
 
 
 if __name__ == "__main__":

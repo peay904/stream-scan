@@ -42,8 +42,9 @@ class Scanner:
         return asyncio.run(self._fetch_all(since_date))
 
     async def _fetch_all(self, since_date: str) -> list[dict]:
-        start = datetime.strptime(since_date, "%Y-%m-%d").date()
-        days = max((date.today() - start).days, 1)
+        today = date.today()
+        start = min(datetime.strptime(since_date, "%Y-%m-%d").date(), today)
+        days = max((today - start).days, 1)
         logger.info(f"Scanning Trakt from {since_date} ({days} days)")
 
         headers = {
