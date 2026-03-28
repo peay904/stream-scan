@@ -41,7 +41,13 @@ class ReportGenerator:
         run_date = datetime.now().strftime("%B %d, %Y")
         def _read_svg(name: str) -> str:
             p = IMAGES_DIR / name
-            return p.read_text(encoding="utf-8") if p.exists() else ""
+            if not p.exists():
+                return ""
+            content = p.read_text(encoding="utf-8")
+            # Strip XML declaration — invalid when inlining SVG in HTML
+            if content.startswith("<?xml"):
+                content = content[content.index("?>") + 2:].lstrip()
+            return content
 
         html = template.render(
             movies=movies,
