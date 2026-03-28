@@ -25,23 +25,25 @@
       align-items: center;
       justify-content: space-between;
       gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
     .header-img {
       flex-shrink: 0;
-      width: 180px;
-      opacity: 1;
     }
-    .header-img svg {
-      width: 100%;
-      height: auto;
-      display: block;
+    .header-img:first-child {
+      width: 140px; 
     }
+        
     .header-center {
       flex: 1;
       text-align: center;
     }
     .header h1 {
-      font-size: 2.5rem;
+      font-size: 2.5rem;.header-img:last-child {
+      width: 110px;
+    }
       font-weight: 700;
       letter-spacing: -0.5px;
       color: #fff;
