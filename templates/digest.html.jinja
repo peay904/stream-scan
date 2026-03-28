@@ -114,6 +114,7 @@
       margin-bottom: 0.5rem;
     }
     .card .card-overview {
+      position: relative;
       font-size: 0.78rem;
       color: #aaa;
       line-height: 1.5;
@@ -121,11 +122,28 @@
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      line-height: 1.5;
+      max-height: 6em;
+      transition: max-height 0.3s ease;
     }
-    .card .card-overview.expanded {
+    .card .card-overview.expanded + .expand-btn {
       display: block;
-      -webkit-line-clamp: unset; /* This removes the 4-line limit */
-    }    
+      -webkit-line-clamp: unset;
+      height: auto;
+    }
+    .card-overview:not(.expanded)::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 2em;
+      background: linear-gradient(to bottom, rgba(26, 26, 26, 0), #1a1a1a);
+      pointer-events: none; /* Allows clicking the text through the fade */
+    }
+    .card-overview.expanded::after {
+      display: none;
+    }
     .card .card-tags {
       margin-top: 0.5rem;
       display: flex;
@@ -223,9 +241,7 @@
     </div>
     
     <div class="card-overview">{{ item.overview or "No summary available." }}</div>
-    
-    {# Only show button if overview is long enough to be clamped #}
-    {% if item.overview and item.overview|length > 160 %}
+    {% if item.overview and item.overview %}
       <button class="expand-btn" onclick="toggleOverview(this)">more</button>
     {% endif %}
 
