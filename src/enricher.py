@@ -102,6 +102,11 @@ class Enricher:
         if tmdb_data is None:
             return None
 
+        # Only include English-language content
+        if tmdb_data.get("original_language") != "en":
+            logger.debug(f"Skipping '{media.get('title')}': non-English ({tmdb_data.get('original_language')})")
+            return None
+
         # Determine streaming services from TMDB watch providers
         streaming_services = _get_us_streaming_services(tmdb_data, target_names)
 

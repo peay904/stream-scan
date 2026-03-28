@@ -118,18 +118,13 @@
       font-size: 0.78rem;
       color: #aaa;
       line-height: 1.5;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-height: 1.5;
       max-height: 6em;
+      overflow: hidden;
       transition: max-height 0.3s ease;
     }
-    .card .card-overview.expanded + .expand-btn {
-      display: block;
-      -webkit-line-clamp: unset;
-      height: auto;
+    .card-overview.expanded {
+      max-height: 600px;
+      overflow: visible;
     }
     .card-overview:not(.expanded)::after {
       content: "";
@@ -139,7 +134,7 @@
       width: 100%;
       height: 2em;
       background: linear-gradient(to bottom, rgba(26, 26, 26, 0), #1a1a1a);
-      pointer-events: none; /* Allows clicking the text through the fade */
+      pointer-events: none;
     }
     .card-overview.expanded::after {
       display: none;
@@ -241,9 +236,7 @@
     </div>
     
     <div class="card-overview">{{ item.overview or "No summary available." }}</div>
-    {% if item.overview and item.overview %}
-      <button class="expand-btn" onclick="toggleOverview(this)">more</button>
-    {% endif %}
+    <button class="expand-btn" onclick="toggleOverview(this)">more</button>
 
     <div class="card-tags">
       {% for svc in item.services %}
@@ -291,6 +284,16 @@
 </footer>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.card-overview').forEach(function (el) {
+    const btn = el.nextElementSibling;
+    if (!btn || !btn.classList.contains('expand-btn')) return;
+    if (el.scrollHeight <= el.clientHeight + 2) {
+      btn.style.display = 'none';
+    }
+  });
+});
+
 function toggleOverview(btn) {
   const overview = btn.previousElementSibling;
   const isExpanded = overview.classList.toggle('expanded');
