@@ -230,6 +230,63 @@
     }
   }
 
+  /* --- Portrait Mobile Optimizations --- */
+  @media (max-width: 600px) and (orientation: portrait) {
+    /* 1. Hide the logos to save vertical space */
+    .logo-left, .logo-right {
+      display: none;
+    }
+
+    /* 2. Center and tighten the header text */
+    .header-center {
+      padding: 1.5rem 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .header h1 {
+      font-size: 1.6rem;
+    }
+
+    .header .subtitle {
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    /* 3. Make the stats more compact */
+    .stats-bar {
+      gap: 0.5rem;
+      justify-content: space-between;
+    }
+
+  .stat .num {
+    font-size: 1.2rem;
+  }
+
+    .stat .label {
+      font-size: 0.6rem;
+      letter-spacing: 0;
+    }
+
+    /* 4. Optimize the posters for two-across viewing */
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .card-body {
+      padding: 0.6rem;
+    }
+
+    .section-title {
+      position: sticky;
+      top: 0;
+      background: #0f0f0f;
+      z-index: 10;
+      padding: 1rem 0 0.5rem;
+      margin-top: 1rem;
+    }
+  }
+
     /* ── No results ── */
     .empty {
       color: #555;
