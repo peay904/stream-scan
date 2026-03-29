@@ -211,6 +211,25 @@
       gap: 4px;
     }
 
+  /* --- Mobile Specific Overrides --- */
+  @media (max-width: 480px) {
+    .grid {
+      /* This overrides the 'auto-fill' and forces exactly 2 columns */
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 0.75rem; 
+    }
+
+    .card .card-title {
+      font-size: 0.85rem;
+      /* This ensures titles don't push cards to different heights */
+      min-height: 2.2rem; 
+    }
+
+    .card .card-meta {
+      font-size: 0.7rem;
+    }
+  }
+
     /* ── No results ── */
     .empty {
       color: #555;
