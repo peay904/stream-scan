@@ -20,49 +20,69 @@
       border-bottom: 1px solid #333;
       margin-bottom: 3rem;
     }
+
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1.5rem;
-      max-width: 900px;
+      max-width: 900px; /* This keeps them tucked in toward the center */
       margin: 0 auto;
-      padding: 0;
+      padding: 0 20px; /* Small buffer for mobile screens */
     }
+
+    /* Base style for both logo containers */
     .header-img {
       flex-shrink: 0;
-      min-width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .header-img:first-child {
+
+    /* Adjust the Left Logo size specifically */
+    .logo-left {
       width: 140px; 
     }
-    .header-img:last-child {
+
+    /* Adjust the Right Logo (Patify) size specifically */
+    .logo-right {
       width: 170px;
-      height: 200px; /* Adjust as needed */
-    }    
+      height: auto;
+    }
+
+    /* Ensure the SVGs scale to their containers */
+    .header-img svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .header-center {
       flex: 1;
       text-align: center;
     }
+
     .header h1 {
-      font-size: 2.5rem;.header-img:last-child {
-      width: 110px;
-    }
+      font-size: 2.5rem;
       font-weight: 700;
       letter-spacing: -0.5px;
       color: #fff;
+      margin: 0;
     }
+
     .header .subtitle {
       color: #888;
       margin-top: 0.5rem;
       font-size: 1rem;
     }
+
     .stats-bar {
       display: flex;
       justify-content: center;
       gap: 2rem;
       margin-top: 1.5rem;
     }
+
     .stat { text-align: center; }
     .stat .num { font-size: 2rem; font-weight: 700; color: #FBB13B; }
     .stat .label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
@@ -214,7 +234,7 @@
 
 <div class="header">
   <div class="header-inner">
-    <div class="header-img">{{ svg1 | safe }}</div>
+    <div class="header-img logo-left">{{ svg1 | safe }}</div>
     <div class="header-center">
       <h1>📺 New Streaming Releases</h1>
       <p class="subtitle">Content that premiered between {{ since_date }} and {{ run_date }}</p>
@@ -233,7 +253,7 @@
         </div>
       </div>
     </div>
-    <div class="header-img">{{ svg2 | safe }}</div>
+    <div class="header-img logo-right">{{ svg2 | safe }}</div>
   </div>
 
 {% macro service_class(svc) %}
