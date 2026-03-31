@@ -140,12 +140,18 @@
       display: inline-block;
       font-size: 0.65rem;
       font-weight: 700;
-      padding: 2px 7px;
+      padding: 2px 0; /* Vertical padding only */
+      width: 80px;    /* Set a fixed width that fits your longest name */
+      text-align: center;
       border-radius: 3px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       flex-shrink: 0;
-    }
+      line-height: 1.2;
+      letter-spacing: 0.05em;
+      box-shadow: 0 1px 3px rgba (0,0,0,0.3);
+}
+
     .svc-Netflix    { background: #e50914; color: #fff; }
     .svc-Hulu       { background: #1ce783; color: #000; }
     .svc-Prime      { background: #00a8e1; color: #fff; }
@@ -246,6 +252,16 @@
       flex-wrap: wrap;
       gap: 3px;
     }
+
+    .service-toggle .service-tag {
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border-radius: 50%;   /* Makes it a perfect circle */
+      text-indent: -9999px; /* Hides the text "Netflix", "Hulu", etc. */
+      overflow: hidden;
+      flex-shrink: 0;       /* Prevents the dot from squishing */
+}
 
     /* ── Footer ── */
     footer {
