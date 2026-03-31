@@ -12,6 +12,7 @@
       background: #0f0f0f;
       color: #e8e8e8;
       padding: 2rem;
+      overflow-x: hidden;
     }
 
     /* ── Header ── */
@@ -26,12 +27,11 @@
       align-items: center;
       justify-content: space-between;
       gap: 1.5rem;
-      max-width: 1300px; /* This keeps them tucked in toward the center */
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 0 20px; /* Small buffer for mobile screens */
+      padding: 0 20px;
     }
 
-    /* Base style for both logo containers */
     .header-img {
       flex-shrink: 0;
       display: flex;
@@ -39,18 +39,9 @@
       justify-content: center;
     }
 
-    /* Adjust the Left Logo size specifically */
-    .logo-left {
-      width: 140px; 
-    }
+    .logo-left  { width: 140px; }
+    .logo-right { width: 170px; height: 60px; }
 
-    /* Adjust the Right Logo (Patify) size specifically */
-    .logo-right {
-      width: 170px;
-      height: 60px;
-    }
-
-    /* Ensure the SVGs scale to their containers */
     .header-img svg {
       width: 100%;
       height: auto;
@@ -84,18 +75,53 @@
     }
 
     .stat { text-align: center; }
-    .stat .num { font-size: 2rem; font-weight: 700; color: #FBB13B; }
+    .stat .num   { font-size: 2rem; font-weight: 700; color: #FBB13B; }
     .stat .label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* ── Section ── */
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 2.5rem 0 1.5rem;
+    /* ── Service Section ── */
+    .service-section {
+      margin-bottom: 3rem;
+    }
+
+    .service-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
       padding-bottom: 0.5rem;
       border-bottom: 2px solid #FBB13B;
+    }
+
+    .service-header-name {
+      font-size: 1.4rem;
+      font-weight: 700;
       color: #fff;
     }
+
+    .service-header-count {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* ── Scroll Row ── */
+    .scroll-row {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.75rem;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .scroll-row:active { cursor: grabbing; }
+
+    /* Hide scrollbar on Webkit but keep it functional */
+    .scroll-row::-webkit-scrollbar { height: 4px; }
+    .scroll-row::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 2px; }
+    .scroll-row::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    .scroll-row::-webkit-scrollbar-thumb:hover { background: #555; }
 
     /* ── Service Badge ── */
     .service-tag {
@@ -113,24 +139,18 @@
     .svc-Max        { background: #002be7; color: #fff; }
     .svc-Peacock    { background: #f5a623; color: #000; }
     .svc-Paramount  { background: #0064ff; color: #fff; }
-    .svc-Apple      { background: #000;    color: #fff; }
+    .svc-Apple      { background: #000;    color: #fff; border: 1px solid #444; }
     .svc-Disney     { background: #1e2161; color: #fff; }
     .svc-default    { background: #444;    color: #fff; }
 
-    /* ── Card Grid ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1.5rem;
-    }
-
     /* ── Card ── */
     .card {
+      flex: 0 0 170px;
+      scroll-snap-align: start;
       background: #1a1a1a;
       border-radius: 8px;
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
-      cursor: default;
     }
     .card:hover {
       transform: translateY(-4px);
@@ -142,10 +162,9 @@
       object-fit: cover;
       display: block;
       background: #2a2a2a;
+      pointer-events: none;
     }
-    .card .card-body {
-      padding: 0.75rem;
-    }
+    .card .card-body  { padding: 0.75rem; }
     .card .card-title {
       font-size: 0.9rem;
       font-weight: 600;
@@ -158,6 +177,21 @@
       color: #666;
       margin-bottom: 0.5rem;
     }
+    .card .card-type-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: #2a2a2a;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+    .card .card-type-badge.movie { color: #FBB13B; }
+    .card .card-type-badge.show  { color: #7ec8e3; }
+
     .card .card-overview {
       position: relative;
       font-size: 0.78rem;
@@ -178,24 +212,17 @@
       right: 0;
       width: 100%;
       height: 2em;
-      background: linear-gradient(to bottom, rgba(26, 26, 26, 0), #1a1a1a);
+      background: linear-gradient(to bottom, rgba(26,26,26,0), #1a1a1a);
       pointer-events: none;
     }
-    .card-overview.expanded::after {
-      display: none;
-    }
-    .card .card-tags {
-      margin-top: 0.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
+    .card-overview.expanded::after { display: none; }
+
     .expand-btn {
-      display: block; /* Ensure it's not inline */
+      display: block;
       width: fit-content;
       background: none;
       border: none;
-      color: #FBB13B; /* Change to a brighter color like Netflix red to test visibility */
+      color: #FBB13B;
       font-size: 0.75rem;
       font-weight: bold;
       cursor: pointer;
@@ -204,6 +231,7 @@
       margin-top: 4px;
     }
     .expand-btn:hover { color: #888; }
+
     .card .card-tags {
       margin-top: 0.5rem;
       display: flex;
@@ -211,100 +239,11 @@
       gap: 4px;
     }
 
-  /* --- Mobile Specific Overrides --- */
-  @media (max-width: 480px) {
-    .grid {
-      /* This overrides the 'auto-fill' and forces exactly 2 columns */
-      grid-template-columns: repeat(2, 1fr); 
-      gap: 0.75rem; 
-    }
-
-    .card .card-title {
-      font-size: 0.85rem;
-      /* This ensures titles don't push cards to different heights */
-      min-height: 2.2rem; 
-    }
-
-    .card .card-meta {
-      font-size: 0.7rem;
-    }
-  }
-
-  /* --- Portrait Mobile Optimizations --- */
-  @media (max-width: 600px) and (orientation: portrait) {
-    /* 1. Hide the logos to save vertical space */
-    .logo-left, .logo-right {
-      display: none;
-    }
-
-    /* 2. Center and tighten the header text */
-    .header-center {
-      padding: 1.5rem 0;
-      margin-bottom: 1.5rem;
-    }
-
-    .header h1 {
-      font-size: 1.6rem;
-    }
-
-    .header .subtitle {
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
-
-    /* 3. Make the stats more compact */
-    .stats-bar {
-      gap: 0.5rem;
-      justify-content: space-between;
-    }
-
-  .stat .num {
-    font-size: 1.2rem;
-  }
-
-    .stat .label {
-      font-size: 0.6rem;
-      letter-spacing: 0;
-    }
-
-    .footer-logo {
-      display: flex;
-      justify-content: center;
-      margin-top: 1.5rem;
-      opacity: 0.6; /* Subtle look for the bottom logo */
-  }
-
-    .footer-logo svg {
-      width: 120px; /* Smaller than the header version */
-      height: auto;
-    }
-
-    /* 4. Optimize the posters for two-across viewing */
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-
-    .card-body {
-      padding: 0.6rem;
-    }
-
-    .section-title {
-      position: sticky;
-      top: 0;
-      background: #0f0f0f;
-      z-index: 10;
-      padding: 1rem 0 0.5rem;
-      margin-top: 1rem;
-    }
-  }
-
     /* ── No results ── */
     .empty {
       color: #555;
       font-style: italic;
       padding: 2rem 0;
-      text-align: center;
     }
 
     /* ── Footer ── */
@@ -315,6 +254,36 @@
       border-top: 1px solid #222;
       color: #444;
       font-size: 0.8rem;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) and (orientation: portrait) {
+      .logo-left, .logo-right { display: none; }
+
+      .header-center {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+      }
+
+      .header h1         { font-size: 1.6rem; }
+      .header .subtitle  { font-size: 0.85rem; margin-bottom: 1rem; }
+
+      .stats-bar {
+        gap: 0.5rem;
+        justify-content: space-between;
+      }
+      .stat .num   { font-size: 1.2rem; }
+      .stat .label { font-size: 0.6rem; letter-spacing: 0; }
+
+      .card { flex: 0 0 140px; }
+
+      .footer-logo {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5rem;
+        opacity: 0.6;
+      }
+      .footer-logo svg { width: 120px; height: auto; }
     }
   </style>
 </head>
@@ -339,10 +308,15 @@
           <div class="num">{{ shows|length }}</div>
           <div class="label">Shows</div>
         </div>
+        <div class="stat">
+          <div class="num">{{ by_service|length }}</div>
+          <div class="label">Services</div>
+        </div>
       </div>
     </div>
     <div class="header-img logo-right">{{ svg2 | safe }}</div>
   </div>
+</div>
 
 {% macro service_class(svc) %}
 {%- if "Netflix" in svc %}svc-Netflix
@@ -363,17 +337,17 @@
     src="{{ item.poster_url or '' }}"
     alt="{{ item.title }} poster"
     loading="lazy"
-    {# Note the change to single quotes inside the SVG below #}
     onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'750\'><rect fill=\'%23222\' width=\'100%\' height=\'100%\'/><text fill=\'%23555\' font-family=\'sans-serif\' font-size=\'40\' x=\'50%\' y=\'50%\' text-anchor=\'middle\' dy=\'.3em\'>No Image</text></svg>';"
   >
   <div class="card-body">
+    <span class="card-type-badge {{ item.type }}">{{ item.type }}</span>
     <div class="card-title">{{ item.title }}</div>
     <div class="card-meta">
-      {{ item.premiere_date }}
+      {{ item.premiere_date | format_date }}
       {% if item.tmdb_rating > 0 %} · ⭐ {{ "%.1f"|format(item.tmdb_rating) }}{% endif %}
       {% if item.runtime_minutes > 0 %} · {{ item.runtime_minutes }}m{% endif %}
     </div>
-    
+
     <div class="card-overview">{{ item.overview or "No summary available." }}</div>
     <button class="expand-btn" onclick="toggleOverview(this)">more</button>
 
@@ -386,35 +360,21 @@
 </div>
 {% endmacro %}
 
-<!-- Movies Section -->
-<h2 class="section-title">🎬 New Movies ({{ movies|length }})</h2>
-{% if movies %}
-<div class="grid">
-  {% for item in movies %}{{ media_card(item) }}{% endfor %}
-</div>
-{% else %}
-<p class="empty">No new movies found for this period.</p>
-{% endif %}
-
-<!-- Shows Section -->
-<h2 class="section-title">📺 New Shows ({{ shows|length }})</h2>
-{% if shows %}
-<div class="grid">
-  {% for item in shows %}{{ media_card(item) }}{% endfor %}
-</div>
-{% else %}
-<p class="empty">No new shows found for this period.</p>
-{% endif %}
-
-<!-- By Service Breakdown -->
-<h2 class="section-title">By Streaming Service</h2>
+<!-- Per-Service Horizontal Scroll Rows -->
 {% for service, items in by_service.items() %}
-<h3 style="margin: 1.5rem 0 1rem; color: #ccc; font-size: 1.1rem;">
-  <span class="service-tag {{ service_class(service) }}">{{ service }}</span>
-  <span style="color:#666; font-size:0.9rem; margin-left:0.5rem;">{{ items|length }} title{% if items|length != 1 %}s{% endif %}</span>
-</h3>
-<div class="grid">
-  {% for item in items %}{{ media_card(item) }}{% endfor %}
+<div class="service-section" id="svc-{{ service | lower | replace(' ', '-') | replace('+', 'plus') }}">
+  <div class="service-header">
+    <span class="service-tag {{ service_class(service) | trim }}">{{ service }}</span>
+    <span class="service-header-name">{{ service }}</span>
+    <span class="service-header-count">{{ items|length }} title{% if items|length != 1 %}s{% endif %}</span>
+  </div>
+  {% if items %}
+  <div class="scroll-row" data-drag-scroll>
+    {% for item in items %}{{ media_card(item) }}{% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">No new titles found for this period.</p>
+  {% endif %}
 </div>
 {% endfor %}
 
@@ -426,26 +386,54 @@
 </footer>
 
 <script>
+// Hide "more" button when content isn't actually clipped
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.card-overview').forEach(function (el) {
     const btn = el.nextElementSibling;
     if (!btn || !btn.classList.contains('expand-btn')) return;
-    if (el.scrollHeight <= el.clientHeight + 2) {
-      btn.style.display = 'none';
-    }
+    if (el.scrollHeight <= el.clientHeight + 2) btn.style.display = 'none';
+  });
+
+  // Drag-to-scroll on desktop
+  document.querySelectorAll('[data-drag-scroll]').forEach(function (row) {
+    let isDragging = false, startX = 0, scrollStart = 0;
+
+    row.addEventListener('mousedown', function (e) {
+      isDragging = true;
+      startX = e.pageX - row.offsetLeft;
+      scrollStart = row.scrollLeft;
+      row.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - row.offsetLeft;
+      row.scrollLeft = scrollStart - (x - startX);
+    });
+
+    document.addEventListener('mouseup', function () {
+      isDragging = false;
+      row.style.cursor = 'grab';
+    });
+
+    row.addEventListener('mouseleave', function () {
+      isDragging = false;
+      row.style.cursor = 'grab';
+    });
   });
 });
 
 function toggleOverview(btn) {
   const overview = btn.previousElementSibling;
 
-  document.querySelectorAll('.card-overview.expanded').forEach((el) => {
+  document.querySelectorAll('.card-overview.expanded').forEach(function (el) {
     if (el !== overview) {
       el.classList.remove('expanded');
       if (el.nextElementSibling) el.nextElementSibling.textContent = 'more';
     }
   });
-  
+
   const isExpanded = overview.classList.toggle('expanded');
   btn.textContent = isExpanded ? 'less' : 'more';
 }

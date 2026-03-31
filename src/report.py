@@ -16,6 +16,14 @@ OUTPUT_DIR = Path("/output")
 class ReportGenerator:
     def __init__(self) -> None:
         self.env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
+        self.env.filters["format_date"] = self._format_date
+
+    @staticmethod
+    def _format_date(value: str) -> str:
+        try:
+            return datetime.strptime(value, "%m-%d-%Y").strftime("%b %d, %Y")
+        except (ValueError, TypeError):
+            return value or "Unknown"
 
     def generate(self, items: list[MediaItem], since_date: str) -> Path:
         template = self.env.get_template("digest.html.jinja")
@@ -34,7 +42,7 @@ class ReportGenerator:
 
         # Display-friendly date from ISO since_date
         try:
-            since_display = datetime.strptime(since_date, "%Y-%m-%d").strftime("%B %d, %Y")
+            since_display = datetime.strptime(since_date, "%m-%d-%y").strftime("%B %d, %Y")
         except ValueError:
             since_display = since_date
 
@@ -78,7 +86,10 @@ class ReportGenerator:
         for item in items:
             for svc in item.services:
                 services.setdefault(svc, []).append(item)
-        return dict(sorted(services.items()))
+        return {
+            svc: sorted(svc_items, key=lambda x: x.premiere_date, reverse=True)
+            for svc, svc_items in sorted(services.items())
+        }
 
     def _prune_old_digests(self, keep: int) -> None:
         digests = sorted(OUTPUT_DIR.glob("digest_*.html"), reverse=True)

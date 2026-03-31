@@ -4,16 +4,15 @@ services:
     container_name: stream-scan
     restart: unless-stopped
     ports:
-      - "${WEB_PORT:-7777}:7777"    # Browse to http://unraid-ip:7777
+      - "${WEB_PORT:-7778}:7778"    # Browse to http://unraid-ip:7777
     environment:
       - TRAKT_CLIENT_ID=${TRAKT_CLIENT_ID}
       - TMDB_API_KEY=${TMDB_API_KEY}
-      - SCAN_DAY=${SCAN_DAY:-friday}
       - SCAN_HOUR=${SCAN_HOUR:-6}
       - SERVICES=${SERVICES:-netflix,hulu,prime,max,peacock,paramount,apple,disney}
       - TZ=${TZ:-America/New_York}
       - FORCE_RUN=${FORCE_RUN:-false}
-      - WEB_PORT=7777
+      - WEB_PORT=7778
     volumes:
       - ./output:/output      # Also accessible on disk if needed
       - ./state:/state        # Last-run timestamp persistence
