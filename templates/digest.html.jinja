@@ -36,35 +36,15 @@
       text-transform: uppercase;
     }
 
-    .logo-right {
-      height: 36px;
-      width: auto;
-      display: flex;
-      align-items: center;
-    }
-    .logo-right svg {
-      height: 36px;
-      width: auto;
-      display: block;
-    }
+    .logo-right svg { height: 36px; width: auto; display: block; }
 
-    .stats-bar {
-      display: flex;
-      gap: 2rem;
-    }
-
+    .stats-bar { display: flex; gap: 2rem; }
     .stat .num   { font-size: 1.6rem; font-weight: 700; color: #FBB13B; line-height: 1; }
     .stat .label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
     /* ── Service List ── */
-    .service-list {
-      padding: 0 1.5rem 3rem;
-    }
-
-    /* ── Service Row (accordion) ── */
-    .service-section {
-      border-bottom: 1px solid #1e1e1e;
-    }
+    .service-list { padding: 0 1.5rem 3rem; }
+    .service-section { border-bottom: 1px solid #1e1e1e; }
 
     .service-toggle {
       display: flex;
@@ -78,232 +58,109 @@
       text-align: left;
       color: inherit;
     }
-    .service-toggle:hover .service-name { color: #fff; }
 
-    .service-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #ccc;
-      transition: color 0.15s;
-    }
-
-    .service-count {
-      font-size: 0.8rem;
-      color: #555;
-    }
-
-    .service-chevron {
-      margin-left: auto;
-      width: 16px;
-      height: 16px;
-      color: #555;
-      transition: transform 0.25s ease, color 0.15s;
-      flex-shrink: 0;
-    }
-    .service-section.open .service-chevron {
-      transform: rotate(180deg);
-      color: #FBB13B;
-    }
+    .service-name { font-size: 1.1rem; font-weight: 700; color: #ccc; transition: color 0.15s; }
+    .service-count { font-size: 0.8rem; color: #555; }
+    .service-chevron { margin-left: auto; width: 16px; height: 16px; color: #555; transition: transform 0.25s ease; }
+    
+    .service-section.open .service-chevron { transform: rotate(180deg); color: #FBB13B; }
     .service-section.open .service-name { color: #fff; }
 
-    /* ── Scroll Panel (collapsed by default) ── */
-    .scroll-panel {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.3s ease;
-    }
-    .service-section.open .scroll-panel {
-      grid-template-rows: 1fr;
-    }
-    .scroll-panel-inner {
-      overflow: hidden;
-    }
+    .scroll-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+    .service-section.open .scroll-panel { grid-template-rows: 1fr; }
+    .scroll-panel-inner { overflow: hidden; }
 
     .scroll-row {
       display: flex;
       gap: 0.85rem;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
       padding: 0.75rem 0 1rem;
       cursor: grab;
-      user-select: none;
     }
-    .scroll-row:active { cursor: grabbing; }
-    .scroll-row::-webkit-scrollbar { height: 4px; }
-    .scroll-row::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 2px; }
-    .scroll-row::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-    .scroll-row::-webkit-scrollbar-thumb:hover { background: #555; }
 
-    /* ── Service Badge ── */
+    /* ── Badges ── */
     .service-tag {
       display: inline-block;
       font-size: 0.65rem;
       font-weight: 700;
-      padding: 2px 0; /* Vertical padding only */
-      width: 80px;    /* Set a fixed width that fits your longest name */
+      padding: 2px 0;
+      width: 80px;
       text-align: center;
       border-radius: 3px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      flex-shrink: 0;
-      line-height: 1.2;
-      letter-spacing: 0.05em;
-      box-shadow: 0 1px 3px rgba (0,0,0,0.3);
-}
+    }
 
-    .svc-Netflix    { background: #e50914; color: #fff; }
-    .svc-Hulu       { background: #1ce783; color: #000; }
-    .svc-Prime      { background: #00a8e1; color: #fff; }
-    .svc-Max        { background: #002be7; color: #fff; }
-    .svc-Peacock    { background: #f5a623; color: #000; }
-    .svc-Paramount  { background: #0064ff; color: #fff; }
-    .svc-Apple      { background: #000;    color: #fff; border: 1px solid #444; }
-    .svc-Disney     { background: #1e2161; color: #fff; }
-    .svc-default    { background: #444;    color: #fff; }
+    /* Circular dots for the accordion list */
+    .service-toggle .service-tag {
+      width: 12px; height: 12px; padding: 0; border-radius: 50%;
+      text-indent: -9999px; overflow: hidden; flex-shrink: 0;
+    }
+
+    .svc-Netflix   { background: #e50914; color: #fff; }
+    .svc-Hulu      { background: #1ce783; color: #000; }
+    .svc-Prime     { background: #00a8e1; color: #fff; }
+    .svc-Max       { background: #002be7; color: #fff; }
+    .svc-Peacock   { background: #f5a623; color: #000; }
+    .svc-Paramount { background: #0064ff; color: #fff; }
+    .svc-Apple     { background: #000;    color: #fff; border: 1px solid #444; }
+    .svc-Disney    { background: #1e2161; color: #fff; }
+    .svc-default   { background: #444;    color: #fff; }
 
     /* ── Card ── */
-    .card {
-      flex: 0 0 155px;
-      scroll-snap-align: start;
-      background: #1a1a1a;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.6);
-    }
-    .card img {
-      width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      display: block;
-      background: #2a2a2a;
-      pointer-events: none;
-    }
+    .card { flex: 0 0 155px; scroll-snap-align: start; background: #1a1a1a; border-radius: 8px; overflow: hidden; }
+    .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; background: #2a2a2a; }
     .card-body { padding: 0.65rem; }
 
     .card-type-badge {
-      display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 600;
-      padding: 1px 5px;
-      border-radius: 3px;
-      background: #222;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.35rem;
+      display: inline-block; font-size: 0.6rem; font-weight: 600; padding: 1px 5px;
+      border-radius: 3px; background: #222; text-transform: uppercase; margin-bottom: 0.35rem;
     }
     .card-type-badge.movie { color: #FBB13B; }
     .card-type-badge.show  { color: #7ec8e3; }
 
-    .card-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 0.3rem;
-      line-height: 1.3;
-    }
-    .card-meta {
-      font-size: 0.7rem;
-      color: #555;
-      margin-bottom: 0.45rem;
-    }
+    .card-title { font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem; line-height: 1.3; }
+    .card-meta { font-size: 0.7rem; color: #555; margin-bottom: 0.45rem; }
+    
     .card-overview {
-      position: relative;
-      font-size: 0.75rem;
-      color: #888;
-      line-height: 1.5;
-      max-height: 5.5em;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
+      position: relative; font-size: 0.75rem; color: #888; line-height: 1.5;
+      max-height: 5.5em; overflow: hidden; transition: max-height 0.3s ease;
     }
-    .card-overview.expanded {
-      max-height: 600px;
-      overflow: visible;
-    }
+    .card-overview.expanded { max-height: 600px; overflow: visible; }
+    
     .card-overview:not(.expanded)::after {
-      content: "";
-      position: absolute;
-      bottom: 0; right: 0;
-      width: 100%; height: 2em;
+      content: ""; position: absolute; bottom: 0; right: 0; width: 100%; height: 2em;
       background: linear-gradient(to bottom, rgba(26,26,26,0), #1a1a1a);
-      pointer-events: none;
     }
-    .card-overview.expanded::after { display: none; }
 
     .expand-btn {
-      display: block;
-      background: none;
-      border: none;
-      color: #FBB13B;
-      font-size: 0.7rem;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 4px 0 0;
+      display: block; background: none; border: none; color: #FBB13B;
+      font-size: 0.7rem; font-weight: 700; cursor: pointer; padding: 4px 0;
     }
-    .expand-btn:hover { color: #888; }
 
+    /* ── Patify Button Hidden Logic ── */
     .patify-btn {
-      display: none;
+      display: none; /* Hidden by default */
       margin-top: 10px;
-      padding: 3px 6px;
+      padding: 5px 6px;
       background: #FBB13B;
-      color: #fff;
+      color: #000; /* Dark text for better contrast on yellow */
       border-radius: 4px;
       font-size: 0.68rem;
-      font-weight: 600;
+      font-weight: 700;
       text-align: center;
       text-decoration: none;
-      letter-spacing: 0.03em;
-      transition: opacity 0.15s;
-    }
-    .patify-btn:hover { opacity: 0.82; }
-
-    .card-overview.expanded + .expand-button + .patify-btn {
-      display: block
     }
 
-    .card-tags {
-      margin-top: 0.45rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
+    /* Show button only when the overview class has 'expanded' */
+    .card-overview.expanded ~ .patify-btn {
+      display: block;
     }
 
-    .service-toggle .service-tag {
-      width: 12px;
-      height: 12px;
-      padding: 0;
-      border-radius: 50%;   /* Makes it a perfect circle */
-      text-indent: -9999px; /* Hides the text "Netflix", "Hulu", etc. */
-      overflow: hidden;
-      flex-shrink: 0;       /* Prevents the dot from squishing */
-}
+    footer { text-align: center; padding: 1.5rem; border-top: 1px solid #1e1e1e; color: #444; font-size: 0.75rem; }
+    .footer-logo { display: flex; justify-content: center; margin-top: 1rem; opacity: 0.5; }
 
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      border-top: 1px solid #1e1e1e;
-      color: #444;
-      font-size: 0.75rem;
-    }
-    .footer-logo {
-      display: flex;
-      justify-content: center;
-      margin-top: 1rem;
-      opacity: 0.5;
-    }
-    .footer-logo svg { width: 100px; height: auto; }
-
-    /* ── Mobile ── */
-    @media (max-width: 480px) {
-      .header h1 { font-size: 1.4rem; }
-      .card { flex: 0 0 130px; }
-    }
+    @media (max-width: 480px) { .header h1 { font-size: 1.4rem; } .card { flex: 0 0 130px; } }
   </style>
 </head>
 <body>
@@ -316,7 +173,7 @@
   <div class="stats-bar">
     <div class="stat">
       <div class="num">{{ total_count }}</div>
-      <div class="label">Total New Titles</div>
+      <div class="label">Total Titles</div>
     </div>
     <div class="stat">
       <div class="num">{{ movies|length }}</div>
@@ -344,56 +201,34 @@
 
 {% macro media_card(item) %}
 <div class="card">
-  <img
-    src="{{ item.poster_url or '' }}"
-    alt="{{ item.title }} poster"
-    loading="lazy"
-    onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'750\'><rect fill=\'%23222\' width=\'100%\' height=\'100%\'/><text fill=\'%23555\' font-family=\'sans-serif\' font-size=\'40\' x=\'50%\' y=\'50%\' text-anchor=\'middle\' dy=\'.3em\'>No Image</text></svg>';"
-  >
+  <img src="{{ item.poster_url or '' }}" alt="{{ item.title }}" loading="lazy" onerror="this.src='https://via.placeholder.com/155x230?text=No+Image';">
   <div class="card-body">
     <span class="card-type-badge {{ item.type }}">{{ item.type }}</span>
     <div class="card-title">{{ item.title }}</div>
     <div class="card-meta">
       {{ item.premiere_date | format_date }}
       {% if item.tmdb_rating > 0 %} · ⭐ {{ "%.1f"|format(item.tmdb_rating) }}{% endif %}
-      {% if item.runtime_minutes > 0 %} · {{ item.runtime_minutes }}m{% endif %}
     </div>
+    
     <div class="card-overview">{{ item.overview or "No summary available." }}</div>
+    
     <button class="expand-btn" onclick="toggleOverview(this)">more</button>
-    <a
-      class="patify-btn"
-        href="https://mypatify.com/{{ 'movie' if item.type == 'movie' else 'tv' }}/{{ item.tmdb_id }}"
-        target="_blank"
-        rel="noopener noreferrer"
-    >+ Add to Patify</a>
-  </div>
-</div>
-{% endmacro %}
-    <div class="card-tags">
-      {% for svc in item.services %}
-      <span class="service-tag {{ service_class(svc) | trim }}">{{ svc }}</span>
-      {% endfor %}
-    </div>
-    <a
-      class="patify-btn"
-      href="https://mypatify.com/{{ 'movie' if item.type == 'movie' else 'tv' }}/{{ item.tmdb_id }}"
-      target="_blank"
-      rel="noopener noreferrer"
-    >+ Add to Patify</a>
+    
+    <a class="patify-btn" 
+       href="https://mypatify.com/{{ 'movie' if item.type == 'movie' else 'tv' }}/{{ item.tmdb_id }}" 
+       target="_blank" rel="noopener noreferrer">+ Add to Patify</a>
   </div>
 </div>
 {% endmacro %}
 
 <div class="service-list">
   {% for service, items in by_service.items() %}
-  <div class="service-section" id="svc-{{ loop.index }}">
-    <button class="service-toggle" onclick="toggleService(this)" aria-expanded="false">
+  <div class="service-section">
+    <button class="service-toggle" onclick="toggleService(this)">
       <span class="service-tag {{ service_class(service) | trim }}">{{ service }}</span>
       <span class="service-name">{{ service }}</span>
       <span class="service-count">{{ items|length }} title{% if items|length != 1 %}s{% endif %}</span>
-      <svg class="service-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
+      <svg class="service-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <div class="scroll-panel">
       <div class="scroll-panel-inner">
@@ -407,69 +242,47 @@
 </div>
 
 <footer>
-  Generated by Stream Scan · Data from Trakt.tv + TMDB · {{ run_date }}
+  Generated by Stream Scan · {{ run_date }}
   <div class="footer-logo">{{ svg2 | safe }}</div>
 </footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Hide "more" buttons when overview isn't clipped
-  document.querySelectorAll('.card-overview').forEach(function (el) {
-    const btn = el.nextElementSibling;
-    if (!btn || !btn.classList.contains('expand-btn')) return;
-    if (el.scrollHeight <= el.clientHeight + 2) btn.style.display = 'none';
-  });
-
-  // Drag-to-scroll on desktop
-  document.querySelectorAll('[data-drag-scroll]').forEach(function (row) {
-    let isDragging = false, startX = 0, scrollStart = 0, moved = false;
-
-    row.addEventListener('mousedown', function (e) {
-      isDragging = true;
-      moved = false;
-      startX = e.pageX - row.offsetLeft;
-      scrollStart = row.scrollLeft;
-      row.style.cursor = 'grabbing';
-    });
-
-    document.addEventListener('mousemove', function (e) {
-      if (!isDragging) return;
-      const x = e.pageX - row.offsetLeft;
-      const delta = x - startX;
-      if (Math.abs(delta) > 4) {
-        moved = true;
-        e.preventDefault();
-        row.scrollLeft = scrollStart - delta;
-      }
-    }, { passive: false });
-
-    document.addEventListener('mouseup', function () {
-      isDragging = false;
-      row.style.cursor = 'grab';
-    });
-  });
-});
-
 function toggleService(btn) {
   const section = btn.closest('.service-section');
-  const isOpen = section.classList.toggle('open');
-  btn.setAttribute('aria-expanded', isOpen);
+  section.classList.toggle('open');
 }
 
 function toggleOverview(btn) {
   const overview = btn.previousElementSibling;
-  const card = btn.closest('.card');
-
-  document.querySelectorAll('.card-overview.expanded').forEach(function (el) {
+  
+  // Close others
+  document.querySelectorAll('.card-overview.expanded').forEach(el => {
     if (el !== overview) {
       el.classList.remove('expanded');
-      if (el.nextElementSibling) el.nextElementSibling.textContent = 'more';
+      el.nextElementSibling.textContent = 'more';
     }
   });
 
   const isExpanded = overview.classList.toggle('expanded');
   btn.textContent = isExpanded ? 'less' : 'more';
 }
+
+// Enable horizontal drag-to-scroll
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-drag-scroll]').forEach(row => {
+    let isDown = false; let startX; let scrollLeft;
+    row.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - row.offsetLeft; scrollLeft = row.scrollLeft; });
+    row.addEventListener('mouseleave', () => { isDown = false; });
+    row.addEventListener('mouseup', () => { isDown = false; });
+    row.addEventListener('mousemove', (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - row.offsetLeft;
+      const walk = (x - startX) * 2;
+      row.scrollLeft = scrollLeft - walk;
+    });
+  });
+});
 </script>
 
 </body>
