@@ -246,6 +246,22 @@
     }
     .expand-btn:hover { color: #888; }
 
+    .patify-btn {
+      display: block;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #e50914;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: opacity 0.15s;
+    }
+    .patify-btn:hover { opacity: 0.82; }
+
     .card-tags {
       margin-top: 0.45rem;
       display: flex;
@@ -345,6 +361,12 @@
       <span class="service-tag {{ service_class(svc) | trim }}">{{ svc }}</span>
       {% endfor %}
     </div>
+    <a
+      class="patify-btn"
+      href="https://mypatify.com/{{ 'movie' if item.type == 'movie' else 'tv' }}/{{ item.tmdb_id }}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >+ Add to Patify</a>
   </div>
 </div>
 {% endmacro %}
