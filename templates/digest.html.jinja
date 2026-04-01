@@ -247,7 +247,7 @@
     .expand-btn:hover { color: #888; }
 
     .patify-btn {
-      display: block;
+      display: none;
       margin-top: 10px;
       padding: 3px 6px;
       background: #FBB13B;
@@ -261,6 +261,10 @@
       transition: opacity 0.15s;
     }
     .patify-btn:hover { opacity: 0.82; }
+
+    .card-overview.expanded + .expand-button + .patify-btn {
+      display: block
+    }
 
     .card-tags {
       margin-top: 0.45rem;
@@ -356,6 +360,15 @@
     </div>
     <div class="card-overview">{{ item.overview or "No summary available." }}</div>
     <button class="expand-btn" onclick="toggleOverview(this)">more</button>
+    <a
+      class="patify-btn"
+        href="https://mypatify.com/{{ 'movie' if item.type == 'movie' else 'tv' }}/{{ item.tmdb_id }}"
+        target="_blank"
+        rel="noopener noreferrer"
+    >+ Add to Patify</a>
+  </div>
+</div>
+{% endmacro %}
     <div class="card-tags">
       {% for svc in item.services %}
       <span class="service-tag {{ service_class(svc) | trim }}">{{ svc }}</span>
@@ -445,6 +458,7 @@ function toggleService(btn) {
 
 function toggleOverview(btn) {
   const overview = btn.previousElementSibling;
+  const card = btn.closest('.card');
 
   document.querySelectorAll('.card-overview.expanded').forEach(function (el) {
     if (el !== overview) {
