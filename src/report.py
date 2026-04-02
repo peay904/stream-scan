@@ -5,6 +5,16 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from src.enricher import MediaItem
+from src.scanner import NETWORK_MAP
+
+# Maps every known alias → canonical key (e.g. "Disney Plus" → "disney")
+_ALIAS_TO_KEY: dict[str, str] = {
+    alias: key
+    for key, aliases in NETWORK_MAP.items()
+    for alias in aliases
+}
+# Canonical display label for each key (first alias is the preferred name)
+_KEY_LABEL: dict[str, str] = {key: aliases[0] for key, aliases in NETWORK_MAP.items()}
 
 logger = logging.getLogger(__name__)
 
@@ -85,10 +95,11 @@ class ReportGenerator:
         services: dict[str, list[MediaItem]] = {}
         for item in items:
             for svc in item.services:
-                services.setdefault(svc, []).append(item)
+                key = _ALIAS_TO_KEY.get(svc, svc)
+                services.setdefault(key, []).append(item)
         return {
-            svc: sorted(svc_items, key=lambda x: x.premiere_date, reverse=True)
-            for svc, svc_items in sorted(services.items())
+            _KEY_LABEL.get(key, key): sorted(svc_items, key=lambda x: x.premiere_date, reverse=True)
+            for key, svc_items in sorted(services.items())
         }
 
     def _prune_old_digests(self, keep: int) -> None:
