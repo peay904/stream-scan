@@ -1,4 +1,3 @@
-import base64
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -70,12 +69,6 @@ class ReportGenerator:
             content = content.replace("cls-", f"{prefix}-cls-")
             return content
 
-        favicon_path = IMAGES_DIR / "3.svg"
-        favicon_data = ""
-        if favicon_path.exists():
-            favicon_bytes = favicon_path.read_bytes()
-            favicon_data = base64.b64encode(favicon_bytes).decode("utf-8")
-
         html = template.render(
             movies=movies,
             shows=shows,
@@ -85,7 +78,6 @@ class ReportGenerator:
             total_count=len(items),
             svg1=_read_svg("1.svg", "svg1"),
             svg2=_read_svg("2.svg", "svg2"),
-            favicon_data=favicon_data,
         )
 
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
