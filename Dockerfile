@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY templates/ ./templates/
 COPY images/ ./images/
+COPY digest.js ./digest.js
 
 # Create volume mount points
 RUN mkdir -p /output /state

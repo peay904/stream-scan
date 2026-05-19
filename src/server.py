@@ -1,8 +1,11 @@
 import logging
+import os
 import threading
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 from src.config import config
+
+_DIGEST_JS_PATH = os.path.join(os.path.dirname(__file__), "..", "digest.js")
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +21,18 @@ class DigestHandler(SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header("Location", "/latest.html")
             self.end_headers()
+            return
+        if self.path == "/digest.js":
+            try:
+                with open(_DIGEST_JS_PATH, "rb") as f:
+                    data = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/javascript")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+            except FileNotFoundError:
+                self.send_error(404)
             return
         super().do_GET()
 
