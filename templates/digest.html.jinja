@@ -10,7 +10,7 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #0f0f0f;
-      color: #e8e8e8;
+      color: #675e5e;
       overflow-x: hidden;
     }
 
@@ -201,7 +201,7 @@
 
 {% macro media_card(item) %}
 <div class="card">
-  <img src="{{ item.poster_url or '' }}" alt="{{ item.title }}" loading="lazy" onerror="this.src='https://via.placeholder.com/155x230?text=No+Image';">
+  <img src="{{ item.poster_url or '' }}" alt="{{ item.title }}" loading="lazy">
   <div class="card-body">
     <span class="card-type-badge {{ item.type }}">{{ item.type }}</span>
     <div class="card-title">{{ item.title }}</div>
@@ -212,7 +212,7 @@
     
     <div class="card-overview">{{ item.overview or "No summary available." }}</div>
     
-    <button class="expand-btn" onclick="toggleOverview(this)">more</button>
+    <button class="expand-btn" data-expand>more</button>
     
     <a class="patify-btn" 
        href="https://mypatify.com/{{ 'movie' if item.type == 'movie' else 'tv' }}/{{ item.tmdb_id }}" 
@@ -224,7 +224,7 @@
 <div class="service-list">
   {% for service, items in by_service.items() %}
   <div class="service-section">
-    <button class="service-toggle" onclick="toggleService(this)">
+    <button class="service-toggle">
       <span class="service-tag {{ service_class(service) | trim }}">{{ service }}</span>
       <span class="service-name">{{ service }}</span>
       <span class="service-count">{{ items|length }} title{% if items|length != 1 %}s{% endif %}</span>
@@ -247,27 +247,32 @@
 </footer>
 
 <script>
-function toggleService(btn) {
-  const section = btn.closest('.service-section');
-  section.classList.toggle('open');
-}
+document.querySelectorAll('.service-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.service-section').classList.toggle('open');
+  });
+});
 
-function toggleOverview(btn) {
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-expand]');
+  if (!btn) return;
   const overview = btn.previousElementSibling;
-  
-  // Close others
   document.querySelectorAll('.card-overview.expanded').forEach(el => {
     if (el !== overview) {
       el.classList.remove('expanded');
       el.nextElementSibling.textContent = 'more';
     }
   });
-
   const isExpanded = overview.classList.toggle('expanded');
   btn.textContent = isExpanded ? 'less' : 'more';
-}
+});
 
-// Enable horizontal drag-to-scroll
+document.querySelectorAll('.card img').forEach(img => {
+  img.addEventListener('error', function () {
+    this.src = 'https://via.placeholder.com/155x230?text=No+Image';
+  });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-drag-scroll]').forEach(row => {
     let isDown = false; let startX; let scrollLeft;
