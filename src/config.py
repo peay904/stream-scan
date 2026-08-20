@@ -8,7 +8,6 @@ os.environ.setdefault("TZ", "UTC")
 
 
 class Config:
-    TRAKT_CLIENT_ID: str = os.getenv("TRAKT_CLIENT_ID", "")
     TMDB_API_KEY: str = os.getenv("TMDB_API_KEY", "")
     SCAN_DAY: str = os.getenv("SCAN_DAY", "friday").lower()
     SCAN_HOUR: int = int(os.getenv("SCAN_HOUR", "6"))
@@ -24,8 +23,6 @@ class Config:
     FORCE_RUN: bool = os.getenv("FORCE_RUN", "false").lower() == "true"
 
     def validate(self) -> None:
-        if not self.TRAKT_CLIENT_ID:
-            raise ValueError("TRAKT_CLIENT_ID environment variable is required")
         if not self.TMDB_API_KEY:
             raise ValueError("TMDB_API_KEY environment variable is required")
 

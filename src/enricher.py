@@ -1,18 +1,28 @@
 import asyncio
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 import httpx
 
 from src.config import config
-from src.scanner import NETWORK_MAP
 
 logger = logging.getLogger(__name__)
 
 TMDB_BASE = "https://api.themoviedb.org/3"
 TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500"
 OUTPUT_DIR = Path("/output")
+
+NETWORK_MAP: dict[str, list[str]] = {
+    "netflix": ["Netflix"],
+    "hulu": ["Hulu"],
+    "prime": ["Amazon Prime Video", "Prime Video"],
+    "max": ["Max", "HBO Max"],
+    "peacock": ["Peacock"],
+    "paramount": ["Paramount+", "Paramount Plus"],
+    "apple": ["Apple TV+", "Apple TV"],
+    "disney": ["Disney+", "Disney Plus"],
+}
 
 
 @dataclass
@@ -25,7 +35,6 @@ class MediaItem:
     services: list[str]
     genres: list[str]
     tmdb_id: int
-    trakt_slug: str
     tmdb_rating: float = 0.0
     runtime_minutes: int = 0     # movies only
     seasons: int = 0             # shows only
@@ -77,22 +86,12 @@ class Enricher:
         posters_dir: Path,
     ) -> MediaItem | None:
         media_type = raw["_type"]
-        trakt_network_matches = raw.get("_trakt_network_matches", False)
-
-        if media_type == "movie":
-            media = raw["movie"]
-            tmdb_id = media.get("ids", {}).get("tmdb")
-            premiere_date = raw.get("released", "")
-            endpoint = f"/movie/{tmdb_id}"
-        else:
-            media = raw["show"]
-            tmdb_id = media.get("ids", {}).get("tmdb")
-            premiere_date = (raw.get("first_aired") or "")[:10]
-            endpoint = f"/tv/{tmdb_id}"
+        tmdb_id = raw.get("id")
 
         if not tmdb_id:
-            logger.debug(f"Skipping '{media.get('title')}': no TMDB ID")
             return None
+
+        endpoint = f"/movie/{tmdb_id}" if media_type == "movie" else f"/tv/{tmdb_id}"
 
         tmdb_data = await self._safe_fetch(
             session,
@@ -102,54 +101,33 @@ class Enricher:
         if tmdb_data is None:
             return None
 
-        # Only include English-language content
-        if tmdb_data.get("original_language") != "en":
-            logger.debug(f"Skipping '{media.get('title')}': non-English ({tmdb_data.get('original_language')})")
-            return None
-
-        # Determine streaming services from TMDB watch providers
+        # Confirm target streaming services
         streaming_services = _get_us_streaming_services(tmdb_data, target_names)
-
-        # For shows, Trakt network already filtered; still confirm via TMDB if available
-        if media_type == "show":
-            if not streaming_services and not trakt_network_matches:
-                return None
-            # If TMDB confirmed services, use those; otherwise use Trakt network name
-            if not streaming_services and trakt_network_matches:
-                trakt_network = raw.get("_trakt_network", "")
-                streaming_services = [trakt_network] if trakt_network else []
-        else:
-            # Movies: must be confirmed on a target service via TMDB
-            if not streaming_services:
-                return None
+        if not streaming_services:
+            return None
 
         # Cache poster
         poster_path = tmdb_data.get("poster_path")
-        if poster_path:
-            local_poster = await self._cache_poster(session, poster_path, posters_dir)
-        else:
-            local_poster = ""
+        local_poster = await self._cache_poster(session, poster_path, posters_dir) if poster_path else ""
 
         # Extract genres
         genres = [g["name"] for g in tmdb_data.get("genres", [])]
 
         # Build MediaItem
-        slug = media.get("ids", {}).get("slug", "")
         rating = tmdb_data.get("vote_average", 0.0) or 0.0
-        overview = tmdb_data.get("overview") or media.get("overview") or ""
-        title = tmdb_data.get("title") or tmdb_data.get("name") or media.get("title", "Unknown")
+        overview = tmdb_data.get("overview") or ""
+        title = tmdb_data.get("title") or tmdb_data.get("name") or "Unknown"
 
         if media_type == "movie":
             return MediaItem(
                 title=title,
                 type="movie",
-                premiere_date=premiere_date or tmdb_data.get("release_date", ""),
+                premiere_date=tmdb_data.get("release_date", ""),
                 overview=overview,
                 poster_url=local_poster,
                 services=streaming_services,
                 genres=genres,
                 tmdb_id=tmdb_id,
-                trakt_slug=slug,
                 tmdb_rating=round(rating, 1),
                 runtime_minutes=tmdb_data.get("runtime") or 0,
             )
@@ -157,13 +135,12 @@ class Enricher:
             return MediaItem(
                 title=title,
                 type="show",
-                premiere_date=premiere_date or tmdb_data.get("first_air_date", ""),
+                premiere_date=tmdb_data.get("first_air_date", ""),
                 overview=overview,
                 poster_url=local_poster,
                 services=streaming_services,
                 genres=genres,
                 tmdb_id=tmdb_id,
-                trakt_slug=slug,
                 tmdb_rating=round(rating, 1),
                 seasons=tmdb_data.get("number_of_seasons") or 0,
             )
@@ -182,9 +159,6 @@ class Enricher:
                 return await self._safe_fetch(session, url, params)
             r.raise_for_status()
             return r.json()
-        except httpx.HTTPStatusError as e:
-            logger.warning(f"TMDB HTTP {e.response.status_code} for {url}")
-            return None
         except Exception as e:
             logger.warning(f"TMDB request failed for {url}: {e}")
             return None
